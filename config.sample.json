@@ -1,0 +1,18 @@
+{
+  "broker": {
+    "host": "localhost",
+    "username": "XXXXXXXX",
+    "password": "XXXXXXXX"
+  },
+  "bridges": [
+    {
+      "host": "XXX.XXX.XXX.XXX",
+      "username": "XXXXXXXX",
+      "interval": 1000,
+      "prefix": "hue/sensor",
+      "ignore": {
+        "buttonevent": [1000, 1001, 2000, 2001, 3000, 3001, 4000, 4001]
+      }
+    }
+  ]
+}

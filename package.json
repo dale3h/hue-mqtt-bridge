@@ -1,0 +1,39 @@
+{
+  "name": "hue-mqtt-bridge",
+  "version": "0.1.0",
+  "description": "Bridge to publish Philips Hue sensors state to an MQTT broker",
+  "main": "index.js",
+  "bin": {
+    "hue-mqtt-bridge": "./bin/hue-mqtt-bridge"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dale3h/hue-mqtt-bridge.git"
+  },
+  "keywords": [
+    "philips",
+    "hue",
+    "bridge",
+    "tap",
+    "dimmer",
+    "motion",
+    "mqtt",
+    "broker",
+    "bridge"
+  ],
+  "author": "Dale Higgs <dale3h@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dale3h/hue-mqtt-bridge/issues"
+  },
+  "homepage": "https://github.com/dale3h/hue-mqtt-bridge",
+  "dependencies": {
+    "deep-extend": "^0.4.1",
+    "equals": "^1.0.5",
+    "mqtt": "^1.12.0",
+    "request": "^2.72.0"
+  }
+}
