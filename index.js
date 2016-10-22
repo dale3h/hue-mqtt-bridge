@@ -47,7 +47,7 @@ function startPolling() {
     bridge.id       = index;
     bridge.interval = bridge.interval || 1000;
     bridge.polling  = false;
-    bridge.prefix   = bridge.prefix || 'hue/sensor';
+    bridge.prefix   = bridge.prefix || 'hue';
     bridge.sensors  = {};
     bridge.skipped  = false;
 
