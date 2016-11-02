@@ -1,6 +1,6 @@
 {
   "name": "hue-mqtt-bridge",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Bridge to publish Philips Hue sensors state to an MQTT broker",
   "main": "index.js",
   "bin": {
@@ -31,7 +31,6 @@
   },
   "homepage": "https://github.com/dale3h/hue-mqtt-bridge",
   "dependencies": {
-    "debug": "^2.2.0",
     "deep-extend": "^0.4.1",
     "equals": "^1.0.5",
     "mqtt": "^1.12.0",

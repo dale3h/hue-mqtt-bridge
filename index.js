@@ -6,14 +6,6 @@ var extend  = require('deep-extend');
 var equal   = require('equals');
 var config  = require('./config.json');
 
-if (undefined !== process.env['PM2_HOME'])
-  process.env['DEBUG'] = '*';
-
-var Debug = require('debug');
-var debug = Debug('hue-mqtt-bridge:debug');
-var error = Debug('hue-mqtt-bridge:error');
-debug.log = console.log.bind(console);
-
 config = extend({
   bridges: [],
   broker: {
@@ -24,7 +16,7 @@ config = extend({
 }, config);
 
 if (undefined === config.bridges || !config.bridges.length) {
-  error('No Philips Hue bridges are configured. Please configure a bridge and try again.');
+  console.error('No Philips Hue bridges are configured. Please configure a bridge and try again.');
   process.exit(1);
 }
 
@@ -35,12 +27,12 @@ function slugify(value) {
 function startPolling() {
   config.bridges.forEach(function(bridge, index) {
     if (!bridge || undefined === bridge.host || !bridge.host) {
-      error('Cannot poll Hue bridge: missing required argument "host"');
+      console.error('Cannot poll Hue bridge: missing required argument "host"');
       process.exit(1);
     }
 
     if (undefined === bridge.username || !bridge.username) {
-      error('Cannot poll Hue bridge %s: missing required argument "username"', bridge.host);
+      console.error('Cannot poll Hue bridge %s: missing required argument "username"', bridge.host);
       process.exit(1);
     }
 
@@ -51,7 +43,7 @@ function startPolling() {
     bridge.sensors  = {};
     bridge.skipped  = false;
 
-    debug('Polling Hue bridge %s every %dms', bridge.host, bridge.interval);
+    console.log('Polling Hue bridge %s every %dms', bridge.host, bridge.interval);
 
     bridge.timer = setInterval(pollSensors, bridge.interval, bridge);
     pollSensors(bridge);
@@ -64,7 +56,7 @@ function pollSensors(_bridge) {
   if (bridge.polling) {
     if (!bridge.skipped) {
       bridge.skipped = true;
-      debug('Polling skipped on Hue bridge %s. Consider raising your polling interval.', bridge.host);
+      console.log('Polling skipped on Hue bridge %s. Consider raising your polling interval.', bridge.host);
     }
     return false;
   }
@@ -80,7 +72,7 @@ function pollSensors(_bridge) {
   request(opts, function(err, res, body) {
     if (err) {
       bridge.polling = false;
-      return error('Error polling sensors on Hue bridge %s: %s', bridge.host, err.toString());
+      return console.error('Error polling sensors on Hue bridge %s: %s', bridge.host, err.toString());
     }
 
     var sensors = body;
@@ -91,7 +83,7 @@ function pollSensors(_bridge) {
 
       if (undefined !== sensorA.error) {
         bridge.polling = false;
-        return error('Error polling sensors on Hue bridge %s: %s', bridge.host, sensorA.error.description);
+        return console.error('Error polling sensors on Hue bridge %s: %s', bridge.host, sensorA.error.description);
       }
 
       if (undefined !== sensorB && !equal(sensorA, sensorB)) {
@@ -102,7 +94,7 @@ function pollSensors(_bridge) {
           var topic = bridge.prefix + '/' + nameSlug + '/' + keySlug;
           var payload = sensorA.state[key];
 
-          debug('%s %s', topic, payload.toString());
+          // console.log('%s %s', topic, payload.toString());
           client.publish(topic, payload.toString());
         });
       }
@@ -132,10 +124,10 @@ client.on('connect', function() {
 
 client.on('error', function(err) {
   if (err)
-    return error('MQTT Error: %s', err.toString());
+    return console.error('MQTT Error: %s', err.toString());
 });
 
 client.on('close', function(err) {
   if (err)
-    return error('MQTT Error: %s', err.toString());
+    return console.error('MQTT Error: %s', err.toString());
 });
