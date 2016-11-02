@@ -30,6 +30,8 @@ If you have any issues, please post them on
 
 ## Installation
 
+### A ***huge*** thank you goes out to @LaurensBot for writing this guide.
+
 The instructions are based on the Raspberry Pi and assume that you already have
 the following installed:
 
