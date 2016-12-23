@@ -40,12 +40,11 @@ the following installed:
   * `git`
   * `mosquitto` MQTT broker
 
-1. Create a folder for hue-mqtt-bridge:
+1. Create a parent folder for hue-mqtt-bridge:
 
   ```
-  cd /home/pi
-  mkdir node
-  cd node
+  mkdir /home/pi/node
+  cd /home/pi/node
   ```
 
 1. Clone the git repository:
@@ -73,11 +72,11 @@ the following installed:
 1. Make `hue-mqtt-bridge` start at boot:
 
   ```
-  sudo npm install –g pm2
-  pm2 startup system
+  sudo npm install -g pm2
+  pm2 startup systemd
   ```
 
-  This will give you a command that includes "sudo" -- run that command.
+  This will give you a command that includes `sudo` -- run that command.
 
 1. Time to run `hue-mqtt-bridge`:
 
@@ -87,17 +86,17 @@ the following installed:
 
   If no errors are shown, all should be working.
 
-1. If no errors are shown stop (Ctrl+C) the process and run:
+1. If no errors are shown stop (`Ctrl+C`) the process and run:
 
   ```
   pm2 start index.js --name hue-mqtt-bridge
   pm2 save
   ```
 
-1. The topics in MQTT start with "hue" by default, so to see the output run:
+1. The topics in MQTT start with `hue` by default, so to see the output run:
 
   ```
-  mosquitto_sub –h localhost –p 1883 –u YOUR_MQTT_USERNAME –P YOUR_MQTT_PASSWORD –v –t '#'
+  mosquitto_sub -h localhost -p 1883 -u YOUR_MQTT_USERNAME -P YOUR_MQTT_PASSWORD -v -t '#'
   ```
 
   Click a button on your Hue Dimmer or Hue Tap, or trigger your Hue Motion.
