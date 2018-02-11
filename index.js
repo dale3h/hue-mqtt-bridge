@@ -86,7 +86,7 @@ function pollSensors(_bridge) {
         return console.error('Error polling sensors on Hue bridge %s: %s', bridge.host, sensorA.error.description);
       }
 
-      if (undefined !== sensorB && !equal(sensorA, sensorB)) {
+      if (hasOldState(sensorB) && stateChanged(sensorA, sensorB)) {
         var nameSlug = slugify(sensorA.name);
 
         Object.keys(sensorA.state).forEach(function(key) {
@@ -104,6 +104,17 @@ function pollSensors(_bridge) {
 
     bridge.polling = bridge.skipped = false;
   });
+}
+
+function hasOldState(sensor) {
+  return undefined !== sensor;
+}
+
+function stateChanged(sensorA, sensorB) {
+  var newState = (sensorA && sensorA.state) ? sensorA.state : undefined;
+  var oldState = (sensorB && sensorB.state) ? sensorB.state : undefined;
+
+  return !equal(newState, oldState);
 }
 
 // Exit handling to disconnect client
