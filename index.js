@@ -86,7 +86,7 @@ function pollSensors(_bridge) {
         return console.error('Error polling sensors on Hue bridge %s: %s', bridge.host, sensorA.error.description);
       }
 
-      if (undefined !== sensorB && !equal(sensorA, sensorB)) {
+      if (undefined !== sensorB && !equal(sensorA.state, sensorB.state)) {
         var nameSlug = slugify(sensorA.name);
 
         Object.keys(sensorA.state).forEach(function(key) {
