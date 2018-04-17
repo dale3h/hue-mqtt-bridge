@@ -86,7 +86,12 @@ function pollSensors(_bridge) {
         return console.error('Error polling sensors on Hue bridge %s: %s', bridge.host, sensorA.error.description);
       }
 
-      if (undefined !== sensorB && !equal(sensorA.state, sensorB.state)) {
+      if (undefined === sensorB) {
+        bridge.sensors[id] = sensorA;
+        return;
+      }
+
+      if (getTime(sensorA) >= getTime(sensorB) && !equal(sensorA.state, sensorB.state)) {
         var nameSlug = slugify(sensorA.name);
 
         Object.keys(sensorA.state).forEach(function(key) {
@@ -104,6 +109,10 @@ function pollSensors(_bridge) {
 
     bridge.polling = bridge.skipped = false;
   });
+}
+
+function getTime(sensor) {
+  return new Date(sensor.state.lastupdated);
 }
 
 // Exit handling to disconnect client
